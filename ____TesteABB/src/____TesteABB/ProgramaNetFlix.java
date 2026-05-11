@@ -27,7 +27,7 @@ public class ProgramaNetFlix implements Comparable<ProgramaNetFlix>{
     }
 
     public String toString() {
-        return id + " - " + titulo + ", sexo: " + sexo + ", média: " + media;
+        return titulo + " - " + release_year + ", imdb: " + imdb_score + ", descricao: " + descricao;
     }
     public String getTitulo() {
         return titulo;
