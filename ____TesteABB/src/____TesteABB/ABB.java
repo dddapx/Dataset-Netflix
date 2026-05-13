@@ -1,5 +1,9 @@
 package ____TesteABB;
 
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
 //Classe ABB<T>: encarregada de manipular a estrutura de dados
 //árvore de busca binária (ABB) genérica.
 //
@@ -158,6 +162,50 @@ public class ABB<T extends Comparable<T>> {
                 fila.addLast(noAux.getFilhoDireito());
             }
             System.out.print(noAux.getValue() + "   ");
+        }
+    }
+
+    //versão nova por overloading de PreOrdem
+    public void preOrdem(Node<T> no, List<T> lista) {
+        if (no != null) {
+            lista.add(no.getValue());
+            preOrdem(no.getFilhoEsquerdo(), lista);
+            preOrdem(no.getFilhoDireito(), lista);
+        }
+    }
+
+    public void emOrdem(Node<T> no, List<T> lista) {
+        if (no != null) {
+            emOrdem(no.getFilhoEsquerdo(), lista);
+            lista.add(no.getValue());
+            emOrdem(no.getFilhoDireito(), lista);
+        }
+    }
+
+    public void posOrdem(Node<T> no, List<T> lista) {
+        if (no != null) {
+            posOrdem(no.getFilhoEsquerdo(), lista);
+            posOrdem(no.getFilhoDireito(), lista);
+            lista.add(no.getValue());
+        }
+    }
+
+    public void emNivel(List<T> lista) {
+        if (isEmpty()) return;
+        
+        // Reaproveitando a lógica da sua LinkedList existente
+        LinkedList<Node<T>> fila = new LinkedList<>();        fila.addLast(getRaiz());
+        
+        while (!fila.isEmpty()) {
+            Node<T> noAux = (Node<T>) fila.pollFirst();
+            lista.add(noAux.getValue());
+            
+            if (noAux.getFilhoEsquerdo() != null) {
+                fila.addLast(noAux.getFilhoEsquerdo());
+            }
+            if (noAux.getFilhoDireito() != null) {
+                fila.addLast(noAux.getFilhoDireito());
+            }
         }
     }
 
