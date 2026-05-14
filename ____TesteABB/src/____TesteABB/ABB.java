@@ -2,7 +2,6 @@ package ____TesteABB;
 
 import java.util.List;
 import java.util.LinkedList;
-import java.util.ArrayList;
 
 //Classe ABB<T>: encarregada de manipular a estrutura de dados
 //árvore de busca binária (ABB) genérica.
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 public class ABB<T extends Comparable<T>> {   
 
     private Node<T> raiz; // Nó raiz da ABB
+    private int contadorComparacoes;
 
     // Construtor da ABB
     public ABB() {
@@ -211,7 +211,28 @@ public class ABB<T extends Comparable<T>> {
 
     // Método que compara dois objetos  do tipo T genérico)
     private int compara(T ob1, T ob2) {
+        contadorComparacoes++;
         return ob1.compareTo( ob2);
+    }
+
+    public int getE_ZeraContador() {
+        int qtd = contadorComparacoes;
+        contadorComparacoes = 0;
+        return qtd;
+    }
+
+    public int getAltura() {
+        return getAltura(raiz);
+    }
+
+    private int getAltura(Node<T> no) {
+        if (no == null) {
+            return -1; // ou 0
+        }
+        int alturaEsquerda = getAltura(no.getFilhoEsquerdo());
+        int alturaDireita = getAltura(no.getFilhoDireito());
+        
+        return 1 + Math.max(alturaEsquerda, alturaDireita);
     }
     
     //Determina o menor elemento a partir de um nó
