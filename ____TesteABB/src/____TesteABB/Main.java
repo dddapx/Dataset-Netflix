@@ -1,173 +1,137 @@
 package ____TesteABB;
 
-import java.util.List;
 import java.util.Scanner;
 
-public class Main{
-    public static void main (String[] args){
-        Scanner scanner = new Scanner(System.in);
-        ABB<ProgramaNetFlix> arvore = new ABB<>();
-        int opcao;
+// Autores: [DAVI BARROS - 10385766] | [Guilherme Miyamoto Bragatto - 10736124]
+public class Main {
 
-        do{
-            System.out.println("Menu:");
-            System.out.println("1. Inserir programa");
-            System.out.println("2. Exibir programas (pre-ordem)");
-            System.out.println("3. Buscar programa por ID");
-            System.out.println("4. Remover programa por ID");
-            System.out.println("5. Buscar programas por gênero");
-            System.out.println("6. Sla");
-            System.out.println("7. Sla");
-            System.out.println("8. Sair");
+    // Campos static para que todos os métodos consigam acessar sem passar por parâmetro
+    private static Scanner scanner = new Scanner(System.in);
+    private static ABB<ProgramaNetFlix> arvore = new ABB<>();
+    private static int opcao;
+
+    public static void main(String[] args) {
+
+        do {
+            System.out.println("\n=== MENU ===");
+            System.out.println("1. Ler dados de arquivo");
+            System.out.println("2. Análises de dados");
+            System.out.println("3. Inserir programa");
+            System.out.println("4. Buscar programa por ID");
+            System.out.println("5. Remover programa por ID");
+            System.out.println("6. Exibir altura da árvore");
+            System.out.println("7. Salvar dados em arquivo");
+            System.out.println("8. Encerrar");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
 
             switch (opcao) {
-                case 1:
-                    // Lógica para inserir um programa
-                    break;
-                case 2:
-                    // Lógica para exibir programas em pré-ordem
-                    break;
-                case 3:
-                    // Lógica para buscar programa por ID
-                    break;
-                case 4:
-                    // Lógica para remover programa por ID
-                    break;
-                case 5:
-                    // Lógica para buscar programas por gênero
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    //
-                    break;
-                case 8:
-                    System.out.println("Saindo...");
-                    break;
+                case 1: lerArquivo();   break;
+                case 2: analises();     break;
+                case 3: inserir();      break;
+                case 4: buscar();       break;
+                case 5: remover();      break;
+                case 6: altura();       break;
+                case 7: salvar();       break;
+                case 8: encerrar();     break;
                 default:
-                    System.out.println("Opção inválida. Adicione um número de 1 a 8.");
+                    System.out.println("Opção inválida. Digite um número de 1 a 8.");
             }
+
         } while (opcao != 8);
-        
-        //opção 1
-        public void um(){
 
+        scanner.close();
+    }
+
+    // Opção 1 — ler arquivo e montar a árvore
+    private static void lerArquivo() {
+        System.out.print("Digite o caminho/nome do arquivo CSV: ");
+        String caminho = scanner.nextLine();
+        GerenciadorDados.carregarArquivo(arvore, caminho);
+    }
+
+    // Opção 2 — sub-menu de análises (implementar nos dias 6-8)
+    private static void analises() {
+        // TODO: implementar sub-menu com as 5 análises (Dias 6-8)
+        System.out.println("Análises ainda não implementadas.");
+    }
+
+    // Opção 3 — inserir novo programa (implementar no Dia 4)
+    private static void inserir() {
+        // TODO: coletar campos via Scanner e inserir na árvore (Dia 4)
+        System.out.println("Inserção ainda não implementada.");
+    }
+
+    // Opção 4 — buscar programa por ID com contagem de comparações e tempo
+    private static void buscar() {
+        System.out.print("Digite o ID do programa (ex: ts123 ou tm456): ");
+        String idBusca = scanner.nextLine().trim();
+
+        // Objeto fantasma: só o id importa para o compareTo, os demais ficam vazios/zero
+        ProgramaNetFlix fantasma = new ProgramaNetFlix(
+            "", "", "", "", "",   // titulo, show_type, descricao, generos, production_countries
+            idBusca,              // id (String, chave da BST)
+            0L,                   // imdb_id
+            0, "", 0, 0, 0,       // release_year, age_certification, runtime, temporadas, imdb_votes
+            0.0, 0.0, 0.0         // imdb_score, tmdb_score, tmdb_popularity
+        );
+
+        // Zera o contador antes de buscar
+        arvore.getE_ZeraContador();
+
+        long tempoInicio = System.nanoTime();
+        Node<ProgramaNetFlix> resultado = arvore.search(fantasma);
+        long tempoFim = System.nanoTime();
+
+        int comparacoes = arvore.getE_ZeraContador();
+
+        if (resultado != null) {
+            System.out.println("Programa encontrado:\n" + resultado.getValue().toString());
+        } else {
+            System.out.println("Programa com ID \"" + idBusca + "\" não encontrado.");
         }
+        System.out.println("Tempo de busca: " + (tempoFim - tempoInicio) + " ns");
+        System.out.println("Comparações realizadas: " + comparacoes);
+    }
 
-        //opção 2
-        public void dois(){
-            System.out.println();
-            int  = scanner.nextInt();
+    // Opção 5 — remover programa por ID
+    private static void remover() {
+        System.out.print("Digite o ID do programa a remover: ");
+        String idRemover = scanner.nextLine().trim();
 
-            switch(){
-                case 1:
-                    //
-                    break;
-                default:
-                    System.out.println("Opção inválida. Adicione um número de 1 a 5.");
-            }
-        }
+        // Objeto fantasma com o id a remover
+        ProgramaNetFlix fantasma = new ProgramaNetFlix(
+            "", "", "", "", "",
+            idRemover,
+            0L,
+            0, "", 0, 0, 0,
+            0.0, 0.0, 0.0
+        );
 
-        //opção 3
-        public void tres(){
-            arvore.inserir();
-        }
+        boolean removido = arvore.eliminar(fantasma);
 
-        //opção 4
-        public void idBusca() {
-            System.out.print("Digite o ID do programa para buscar: ");
-            String idBusca = scanner.nextLine();
-            
-            //objeto 'fantasma'
-            ProgramaNetFlix fantasmaBusca = new ProgramaNetFlix(idBusca, "", "", "", 0, "", 0, "", "", 0.0, "", 0.0, 0.0, 0.0, 0.0);
-            
-            //zera o contador de comparações
-            arvore.getE_ZeraContador(); 
-            
-            //monitora o tempo (em nanossegundos) e faz a busca
-            long tempoInicio = System.nanoTime();
-            Node<ProgramaNetFlix> resultadoBusca = arvore.search(fantasmaBusca);
-            long tempoFim = System.nanoTime();
-            
-            int totalComparacoes = arvore.getE_ZeraContador(); 
-            
-            if (resultadoBusca != null) {
-                System.out.println("Programa Encontrado: " + resultadoBusca.getValue().toString());
-            } else {
-                System.out.println("Programa não encontrado na árvore.");
-            }
-            System.out.println("Tempo de execução da busca: " + (tempoFim - tempoInicio) + " ns");
-            System.out.println("Comparações realizadas: " + totalComparacoes);
-        }
-
-        //opção 5
-        public void idRemover() {
-            System.out.print("Digite o ID do programa para remover: ");
-            String idRemover = scanner.nextLine();
-            
-            //cria o objeto fantasma com o ID
-            ProgramaNetFlix fantasmaRemover = new ProgramaNetFlix(idRemover, "", "", "", 0, "", 0, "", "", 0.0, "", 0.0, 0.0, 0.0, 0.0);
-            
-            //chama eliminar da árvore
-            boolean foiRemovido = arvore.eliminar(fantasmaRemover);
-            
-            if (foiRemovido) {
-                System.out.println("Programa com ID " + idRemover + " removido com sucesso!");
-            } else {
-                System.out.println("Falha na remoção: ID não encontrado.");
-            }
-        }
-
-    //opção 6
-    public void seis() {
-        double[] somaPopularidade = new double[12];
-        double[] somaScores = new double[15];
-        int[] contadorFilmes = new int[15];
-
-        System.out.print("Digite o gênero escolhido: ");
-        String genero = scanner.nextLine();
-
-        for (ProgramaNetFlix programa : arvore) {
-            if (genero.equals(programa.getGenre())) {
-                int releaseYear = programa.getRelease_year();
-                int decadeIndex = releaseYear - 1900;
-                somaPopularidade[decadeIndex] += programa.getTmdb_popularity();
-                somaScores[decadeIndex] += programa.getImdb_score();
-                contadorFilmes[decadeIndex]++
-                
-                for (int i = 0; i < somaScores.length; i++) {
-                    somaScores[i] += programa.getScore(i);
-                }
-                //media de popularidade e scores por década
-                for(int i = 0; i < somaScores.length; i++){
-                    somaPopularidade[i] /= contadorFilmes[i];
-                    somaScores[i] /= contadorFilmes[i];
-                }
-            }
-        }
-
-        List<ProgramaNetFlix> programasPorGenero = arvore.buscarPorGenero(genero);
-        preOrdem(raiz, programasPorGenero);
-
-        for (ProgramaNetFlix programa : programasPorGenero) {
-            if(genres.contains(programa.getGenre())) {
-                programa.getRelease_year();
-                System.out.println(programa.getRelease_year() / 10 * 10 + programa.getTitle());
-            }
+        if (removido) {
+            System.out.println("Programa \"" + idRemover + "\" removido com sucesso.");
+        } else {
+            System.out.println("ID \"" + idRemover + "\" não encontrado na árvore.");
         }
     }
 
-    //opção 7
-    public void sete() {
-        // Lógica para opção 7
+    // Opção 6 — exibir altura da árvore
+    private static void altura() {
+        System.out.println("Altura atual da árvore BST: " + arvore.getAltura());
     }
 
-    //opção 8
-    public void oito() {
-        System.out.println("Okay, Saindo");
-        opcao = 0;
+    // Opção 7 — salvar dados em arquivo (implementar no Dia 5)
+    private static void salvar() {
+        // TODO: gravar em-ordem no CSV com nome fornecido pelo usuário (Dia 5)
+        System.out.println("Salvamento ainda não implementado.");
+    }
+
+    // Opção 8 — liberar memória e encerrar
+    private static void encerrar() {
+        arvore.setRaiz(null); // libera toda a árvore
+        System.out.println("Dados liberados. Encerrando...");
     }
 }

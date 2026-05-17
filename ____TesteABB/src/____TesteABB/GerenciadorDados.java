@@ -25,29 +25,21 @@ public class GerenciadorDados {
 
                 if (colunas.length == 15 && linhaEhValida(colunas)) {
                     
-                    Long id = Long.parseLong(colunas[0].replace("\"", ""));
+                    String id = colunas[0].replace("\"", "").trim();
                     String titulo = colunas[1].replace("\"", "");
                     String show_type = colunas[2].replace("\"", "");
                     String descricao = colunas[3].replace("\"", "");
                     int release_year = Integer.parseInt(colunas[4]);
-                    int age_certification = Integer.parseInt(colunas[5].replace("\"", ""));
+                    String age_certification = colunas[5].replace("\"", "").trim();
                     int runtime = Integer.parseInt(colunas[6]);
                     String generos = colunas[7].replace("\"", "");
                     String production_countries = colunas[8].replace("\"", "");
 
                     int temporadas = (int) Double.parseDouble(colunas[9]);
 
-                    Long imdb_id = null;
-                    String imdbRaw = colunas[10].replace("\"", "");
-                    if (!imdbRaw.isEmpty()) {
-                        try {
-                            imdb_id = Long.parseLong(imdbRaw);
-                        } catch (NumberFormatException ex) {
-                            imdb_id = 0L;
-                        }
-                    } else {
-                        imdb_id = 0L;
-                    }
+                    String imdbRaw = colunas[10].replace("\"", "").trim();
+                    Long imdb_id = imdbRaw.isEmpty() ? 0L : imdbRaw.replaceAll("[^0-9]", "").isEmpty() 
+                    ? 0L : Long.parseLong(imdbRaw.replaceAll("[^0-9]", ""));
 
                     double imdb_score = Double.parseDouble(colunas[11]);
                     int imdb_votes = (int) Double.parseDouble(colunas[12]);

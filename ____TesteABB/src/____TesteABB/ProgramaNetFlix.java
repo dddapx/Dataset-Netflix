@@ -1,14 +1,14 @@
 package ____TesteABB;
 
 public class ProgramaNetFlix implements Comparable<ProgramaNetFlix>{
-    private String titulo, show_type, descricao, generos, Production_countries;
-    private Long id, imdb_id;
-    private int release_year, age_certification, runtime, temporadas, imdb_votes;
+    private String id, titulo, show_type, descricao, generos, Production_countries, age_certification;
+    private Long imdb_id;
+    private int release_year, runtime, temporadas, imdb_votes;
     private double imdb_score, tmdb_score, tmdb_popularity;
 
     public ProgramaNetFlix(String titulo, String show_type, String descricao, String generos,
-            String production_countries, Long id, Long imdb_id, int release_year, int age_certification, int runtime,
-            int temporadas, int imdb_votes, double imdb_score, double tmdb_score, double tmdb_popularity) {
+        String production_countries, String id, Long imdb_id, int release_year, String age_certification, int runtime,
+        int temporadas, int imdb_votes, double imdb_score, double tmdb_score, double tmdb_popularity) {
         this.titulo = titulo;
         this.show_type = show_type;
         this.descricao = descricao;
@@ -59,10 +59,10 @@ public class ProgramaNetFlix implements Comparable<ProgramaNetFlix>{
     public void setProduction_countries(String production_countries) {
         Production_countries = production_countries;
     }
-    public Long getId() {
+    public String getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public Long getImdb_id() {
@@ -77,10 +77,10 @@ public class ProgramaNetFlix implements Comparable<ProgramaNetFlix>{
     public void setRelease_year(int release_year) {
         this.release_year = release_year;
     }
-    public int getAge_certification() {
+    public String getAge_certification() {
         return age_certification;
     }
-    public void setAge_certification(int age_certification) {
+    public void setAge_certification(String age_certification) {
         this.age_certification = age_certification;
     }
     public int getRuntime() {
