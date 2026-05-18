@@ -74,23 +74,69 @@ public class Main {
 
     // Opção 2 — sub-menu de análises (implementar nos dias 6-8)
     private static void analises(int opcao) {
-        // TODO: implementar sub-menu com as 5 análises (Dias 6-8)
-        System.out.println("Análises ainda não implementadas.");
+        int opcaoAnalise;
+        do {
+            System.out.println("\n=== ANÁLISES ESTATÍSTICAS ===");
+            System.out.println("1. Achados (TV-14 e Crime) - [Percurso: Em Ordem]");
+            System.out.println("2. Auge do Gênero (Menores tmdb_score) - [Percurso: Pré-Ordem]");
+            System.out.println("3. Média de Popularidade por País - [Percurso: Pós-Ordem]");
+            System.out.println("4. Maiores Sucessos (imdb_score > X) - [Percurso: Em Nível]");
+            System.out.println("5. Maratona (Séries com mais temporadas) - [Percurso: Em Ordem]");
+            System.out.println("6. Voltar ao Menu Principal");
+            opcaoAnalise = lerInteiroSeguro("Escolha uma opção de análise: ");
 
-        do{
-            System.out.println();
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            switch (opcaoAnalise) {
+                case 1: achados(); break;
+                case 2: augeGenero(); break;
+                case 3: System.out.println("A implementar no Dia 2..."); break;
+                case 4: System.out.println("A implementar no Dia 2..."); break;
+                case 5: System.out.println("A implementar no Dia 2..."); break;
+                case 6: System.out.println("A regressar ao menu principal..."); break;
+                default: System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (opcaoAnalise != 6);
+    }
 
-            switch (opcao) {
-                case 1: achados();   break;
-                case 2: augeGenero();     break;
-                case 3: paisesVirais();      break;
-                case 4: maioresSucessosPais();       break;
-                case 5: maratona();      break;
-                default:
-                    System.out.println("Opção inválida. Digite um número de 1 a 5.");
-        } while (opcao != 5);
+    // 1ª Estatística - Percurso: Em Ordem 
+    private static void achados() {
+        java.util.List<ProgramaNetFlix> lista = new java.util.ArrayList<>();
+        
+        arvore.emOrdem(arvore.getRaiz(), lista); 
+        
+        System.out.println("\n--- Top 10 títulos (TV-14 e Crime) ---");
+        int count = 0;
+        for (ProgramaNetFlix p : lista) {
+            if ("TV-14".equals(p.getAge_certification()) && p.getGeneros().toLowerCase().contains("crime")) {
+                System.out.println("- " + p.getTitulo() + " (ID: " + p.getId() + ")");
+                count++;
+                if (count == 10) break; 
+            }
+        }
+        if (count == 0) {
+            System.out.println("Nenhum programa encontrado com estes critérios.");
+        }
+    }
+
+    // 2ª Estatística - Percurso: Pré-Ordem
+    private static void augeGenero() {
+        int n = lerInteiroSeguro("\nQuantos títulos com os menores tmdb_score deseja visualizar? (Deve ser > 5): ");
+        
+        if (n <= 5) {
+            System.out.println("Atenção: O número deve ser estritamente maior que 5, conforme as diretrizes.");
+            return;
+        }
+        
+        java.util.List<ProgramaNetFlix> lista = new java.util.ArrayList<>();
+        arvore.preOrdem(arvore.getRaiz(), lista); 
+        
+        lista.removeIf(p -> p.getTmdb_score() == 0.0);
+        lista.sort(java.util.Comparator.comparingDouble(ProgramaNetFlix::getTmdb_score));
+        
+        System.out.println("\n--- Top " + n + " títulos com os piores scores no TMDB ---");
+        for (int i = 0; i < Math.min(n, lista.size()); i++) {
+            ProgramaNetFlix prog = lista.get(i);
+            System.out.println((i+1) + ". " + prog.getTitulo() + " | Score TMDB: " + prog.getTmdb_score() + " | Tipo: " + prog.getShow_type());
+        }
     }
 
     // Opção 3 — inserir novo programa (implementar no Dia 4)
