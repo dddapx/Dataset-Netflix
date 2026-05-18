@@ -73,14 +73,15 @@ public class Main {
     }
 
     // Opção 2 — sub-menu de análises (implementar nos dias 6-8)
-    private static void analises(int opcao) {
-        int opcaoAnalise;
+    private static void analises() { // <-- Parâmetro int removido aqui
+        int opcaoAnalise; // <-- Variável declarada para corrigir os erros vermelhos
+        
         do {
             System.out.println("\n=== ANÁLISES ESTATÍSTICAS ===");
             System.out.println("1. Achados (TV-14 e Crime) - [Percurso: Em Ordem]");
             System.out.println("2. Auge do Gênero (Menores tmdb_score) - [Percurso: Pré-Ordem]");
-            System.out.println("3. Média de Popularidade por País - [Percurso: Pós-Ordem]");
-            System.out.println("4. Maiores Sucessos (imdb_score > X) - [Percurso: Em Nível]");
+            System.out.println("3. Países Virais (Filmes por país com nota > X) - [Percurso: Pós-Ordem]");
+            System.out.println("4. Clássicos (Top N Mais Antigos) - [Percurso: Em Nível]");
             System.out.println("5. Maratona (Séries com mais temporadas) - [Percurso: Em Ordem]");
             System.out.println("6. Voltar ao Menu Principal");
             opcaoAnalise = lerInteiroSeguro("Escolha uma opção de análise: ");
@@ -88,9 +89,9 @@ public class Main {
             switch (opcaoAnalise) {
                 case 1: achados(); break;
                 case 2: augeGenero(); break;
-                case 3: System.out.println("A implementar no Dia 2..."); break;
-                case 4: System.out.println("A implementar no Dia 2..."); break;
-                case 5: System.out.println("A implementar no Dia 2..."); break;
+                case 3: paisesVirais(); break; // <-- Adicionados aqui para remover os avisos amarelos
+                case 4: classicos(); break;
+                case 5: maratona(); break;
                 case 6: System.out.println("A regressar ao menu principal..."); break;
                 default: System.out.println("Opção inválida. Tente novamente.");
             }
@@ -139,12 +140,110 @@ public class Main {
         }
     }
 
-    // Opção 3 — inserir novo programa (implementar no Dia 4)
-    private static void inserir() {
-        // TODO: coletar campos via Scanner e inserir na árvore (Dia 4)
-        System.out.println("Inserção ainda não implementada.");
+    private static void paisesVirais() {
+    System.out.print("\nDigite a sigla do país de produção (ex: US, BR): ");
+    String pais = scanner.nextLine().trim().toUpperCase();
+    double notaMinima = lerDoubleSeguro("Digite a nota mínima do IMDB desejada (ex: 7.5): ");
+
+    java.util.List<ProgramaNetFlix> lista = new java.util.ArrayList<>();
+    arvore.posOrdem(arvore.getRaiz(), lista); // Requisito: Percurso Pós-Ordem
+
+    System.out.println("\n--- Filmes (" + pais + ") com IMDB > " + notaMinima + " ---");
+    int count = 0;
+    for (ProgramaNetFlix p : lista) {
+        if ("MOVIE".equalsIgnoreCase(p.getShow_type()) && 
+            p.getProduction_countries().contains(pais) && 
+            p.getImdb_score() > notaMinima) {
+            System.out.println("- " + p.getTitulo() + " | Nota IMDB: " + p.getImdb_score());
+            count++;
+        }
+    }
+    if (count == 0) System.out.println("Nenhum filme encontrado com estas características.");
+}
+
+private static void classicos() {
+    int n = lerInteiroSeguro("\nQuantos títulos antigos deseja visualizar? (N > 5): ");
+    if (n <= 5) {
+        System.out.println("Pelas regras da análise, o número deve ser estritamente maior que 5.");
+        return;
     }
 
+    java.util.List<ProgramaNetFlix> lista = new java.util.ArrayList<>();
+    arvore.emNivel(lista); // Requisito: Percurso em Largura / Nível
+
+    // Ordena do mais antigo para o mais recente
+    lista.sort(java.util.Comparator.comparingInt(ProgramaNetFlix::getRelease_year));
+
+    System.out.println("\n--- Top " + n + " Títulos Mais Antigos (Clássicos) ---");
+    for (int i = 0; i < Math.min(n, lista.size()); i++) {
+        ProgramaNetFlix p = lista.get(i);
+        System.out.println((i+1) + ". " + p.getTitulo() + " (" + p.getRelease_year() + ")");
+    }
+}
+
+private static void maratona() {
+    int minTemporadas = lerInteiroSeguro("\nNúmero mínimo de temporadas: ");
+
+    java.util.List<ProgramaNetFlix> lista = new java.util.ArrayList<>();
+    arvore.emOrdem(arvore.getRaiz(), lista);
+
+    System.out.println("\n--- Séries com pelo menos " + minTemporadas + " temporadas ---");
+    for (ProgramaNetFlix p : lista) {
+        if ("SHOW".equalsIgnoreCase(p.getShow_type()) && p.getTemporadas() >= minTemporadas) {
+            System.out.println("- " + p.getTitulo() + " (" + p.getTemporadas() + " temporadas)");
+        }
+    }
+}
+
+    // Opção 3 — inserir novo programa (implementar no Dia 4)
+    private static void inserir() {
+        System.out.println("\n--- Inserir Novo Programa ---");
+    
+    System.out.print("Título: ");
+    String titulo = scanner.nextLine().trim();
+    
+    System.out.print("Tipo (SHOW ou MOVIE): ");
+    String tipo = scanner.nextLine().trim().toUpperCase();
+    while(!tipo.equals("SHOW") && !tipo.equals("MOVIE")) {
+        System.out.print("Tipo inválido. Digite obrigatoriamente SHOW ou MOVIE: ");
+        tipo = scanner.nextLine().trim().toUpperCase();
+    }
+    
+    // Geração do ID exigido: ts + numero único ou tm + numero único
+    long numUnico = System.currentTimeMillis() % 1000000; 
+    String idGerado = (tipo.equals("SHOW") ? "ts" : "tm") + numUnico;
+    
+    System.out.print("Descrição: ");
+    String descricao = scanner.nextLine().trim();
+    
+    System.out.print("Gêneros (ex: [\"comedy\", \"drama\"]): ");
+    String generos = scanner.nextLine().trim();
+    
+    System.out.print("Países de Produção (ex: [\"US\"]): ");
+    String paises = scanner.nextLine().trim();
+    
+    int ano = lerInteiroSeguro("Ano de Lançamento: ");
+    
+    System.out.print("Classificação Etária (ex: TV-14, R): ");
+    String age = scanner.nextLine().trim();
+    
+    int runtime = lerInteiroSeguro("Duração (minutos): ");
+    int temporadas = (tipo.equals("SHOW")) ? lerInteiroSeguro("Número de Temporadas: ") : 0;
+    
+    long imdb_id = (long) lerInteiroSeguro("ID numérico do IMDB (somente números): ");
+    double imdb_score = lerDoubleSeguro("Nota do IMDB (utilize ponto ou vírgula conforme o seu sistema regional): ");
+    int imdb_votes = lerInteiroSeguro("Quantidade total de votos do IMDB: ");
+    double tmdb_score = lerDoubleSeguro("Nota do TMDB: ");
+    double tmdb_pop = lerDoubleSeguro("Popularidade TMDB: ");
+
+    ProgramaNetFlix novo = new ProgramaNetFlix(
+        titulo, tipo, descricao, generos, paises, idGerado, imdb_id,
+        ano, age, runtime, temporadas, imdb_votes, imdb_score, tmdb_score, tmdb_pop
+    );
+
+    arvore.inserir(novo);
+    System.out.println("\nPrograma inserido com sucesso na árvore! O ID gerado para este registo foi: " + idGerado);
+}
     // Opção 4 — buscar programa por ID com contagem de comparações e tempo
     private static void buscar() {
         System.out.print("Digite o ID do programa (ex: ts123 ou tm456): ");
@@ -207,9 +306,17 @@ public class Main {
 
     // Opção 7 — salvar dados em arquivo (implementar no Dia 5)
     private static void salvar() {
-        // TODO: gravar em-ordem no CSV com nome fornecido pelo usuário (Dia 5)
-        System.out.println("Salvamento ainda não implementado.");
-    }
+        System.out.print("\nDigite o nome do ficheiro para a gravação (ex: netflix_atualizado.csv): ");
+        String nomeFicheiro = scanner.nextLine().trim();
+        
+        if(nomeFicheiro.isEmpty()) {
+            System.out.println("Nome de ficheiro não pode ser vazio.");
+            return;
+        }
+    
+    // Chama o método disponível no ficheiro GerenciadorDados
+    GerenciadorDados.salvarArquivo(arvore, nomeFicheiro);
+}
 
     // Opção 8 — liberar memória e encerrar
     private static void encerrar() {
