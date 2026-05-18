@@ -1,5 +1,6 @@
 package ____TesteABB;
 
+//Autores: [DAVI BARROS - 10385766] | [Guilherme Miyamoto Bragatto - 10736124]
 public class ProgramaNetFlix implements Comparable<ProgramaNetFlix>{
     private String id, titulo, show_type, descricao, generos, Production_countries, age_certification;
     private Long imdb_id;
