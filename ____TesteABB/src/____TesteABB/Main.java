@@ -248,31 +248,39 @@ private static void maratona() {
     private static void buscar() {
         System.out.print("Digite o ID do programa (ex: ts123 ou tm456): ");
         String idBusca = scanner.nextLine().trim();
-
-        // Objeto fantasma: só o id importa para o compareTo, os demais ficam vazios/zero
+ 
         ProgramaNetFlix fantasma = new ProgramaNetFlix(
-            "", "", "", "", "",   // titulo, show_type, descricao, generos, production_countries
-            idBusca,              // id (String, chave da BST)
-            0L,                   // imdb_id
-            0, "", 0, 0, 0,       // release_year, age_certification, runtime, temporadas, imdb_votes
-            0.0, 0.0, 0.0         // imdb_score, tmdb_score, tmdb_popularity
+            "", "", "", "", "", idBusca, 0L, 0, "", 0, 0, 0, 0.0, 0.0, 0.0
         );
-
-        // Zera o contador antes de buscar
+ 
         arvore.getE_ZeraContador();
-
         long tempoInicio = System.nanoTime();
         Node<ProgramaNetFlix> resultado = arvore.search(fantasma);
         long tempoFim = System.nanoTime();
-
         int comparacoes = arvore.getE_ZeraContador();
-
+ 
         if (resultado != null) {
-            System.out.println("Programa encontrado:\n" + resultado.getValue().toString());
+            ProgramaNetFlix p = resultado.getValue();
+            System.out.println("\n--- Programa encontrado ---");
+            System.out.println("ID:              " + p.getId());
+            System.out.println("Título:          " + p.getTitulo());
+            System.out.println("Tipo:            " + p.getShow_type());
+            System.out.println("Ano:             " + p.getRelease_year());
+            System.out.println("Certificação:    " + p.getAge_certification());
+            System.out.println("Gêneros:         " + p.getGeneros());
+            System.out.println("Países:          " + p.getProduction_countries());
+            System.out.println("Runtime:         " + p.getRuntime() + " min");
+            System.out.println("Temporadas:      " + p.getTemporadas());
+            System.out.println("IMDB Score:      " + p.getImdb_score());
+            System.out.println("IMDB Votes:      " + p.getImdb_votes());
+            System.out.println("TMDB Score:      " + p.getTmdb_score());
+            System.out.println("TMDB Popularity: " + p.getTmdb_popularity());
+            System.out.println("Descrição:       " + p.getDescricao());
         } else {
             System.out.println("Programa com ID \"" + idBusca + "\" não encontrado.");
         }
-        System.out.println("Tempo de busca: " + (tempoFim - tempoInicio) + " ns");
+        System.out.printf("Tempo de busca:         %d ns (%.4f ms)%n",
+                (tempoFim - tempoInicio), (tempoFim - tempoInicio) / 1_000_000.0);
         System.out.println("Comparações realizadas: " + comparacoes);
     }
 
