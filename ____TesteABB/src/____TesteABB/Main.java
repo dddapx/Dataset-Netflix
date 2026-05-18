@@ -43,6 +43,28 @@ public class Main {
 
     }
 
+    private static int lerInteiroSeguro(String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, digite um número inteiro.");
+            }
+        }
+    }
+
+    private static double lerDoubleSeguro(String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                return Double.parseDouble(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Por favor, digite um número (use ponto para decimais).");
+            }
+        }
+    }
+
     // Opção 1 — ler arquivo e montar a árvore
     private static void lerArquivo() {
         System.out.print("Digite o caminho/nome do arquivo CSV: ");
