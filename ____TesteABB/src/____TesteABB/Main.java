@@ -41,7 +41,6 @@ public class Main {
 
         } while (opcao != 8);
 
-        scanner.close();
     }
 
     // Opção 1 — ler arquivo e montar a árvore
@@ -52,9 +51,24 @@ public class Main {
     }
 
     // Opção 2 — sub-menu de análises (implementar nos dias 6-8)
-    private static void analises() {
+    private static void analises(int opcao) {
         // TODO: implementar sub-menu com as 5 análises (Dias 6-8)
         System.out.println("Análises ainda não implementadas.");
+
+        do{
+            System.out.println();
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1: achados();   break;
+                case 2: augeGenero();     break;
+                case 3: paisesVirais();      break;
+                case 4: maioresSucessosPais();       break;
+                case 5: maratona();      break;
+                default:
+                    System.out.println("Opção inválida. Digite um número de 1 a 5.");
+        } while (opcao != 5);
     }
 
     // Opção 3 — inserir novo programa (implementar no Dia 4)
