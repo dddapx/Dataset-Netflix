@@ -22,6 +22,7 @@ public class Main {
             System.out.println("6. Exibir altura da árvore");
             System.out.println("7. Salvar dados em arquivo");
             System.out.println("8. Encerrar");
+            System.out.println("9. [TESTE] Inserir dados rápidos");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
             scanner.nextLine();
@@ -35,6 +36,7 @@ public class Main {
                 case 6: altura();       break;
                 case 7: salvar();       break;
                 case 8: encerrar();     break;
+                case 9: popularDadosDeTeste(); break;
                 default:
                     System.out.println("Opção inválida. Digite um número de 1 a 8.");
             }
@@ -331,4 +333,29 @@ private static void maratona() {
         arvore.setRaiz(null); // libera toda a árvore
         System.out.println("Dados liberados. Encerrando...");
     }
+
+    // Método temporário apenas para agilizar os testes
+    private static void popularDadosDeTeste() {
+    
+    ProgramaNetFlix p1 = new ProgramaNetFlix(
+        "Filme Antigo", "MOVIE", "Um clássico do cinema", "drama", "US", 
+        "tm999", 111L, 1950, "R", 120, 0, 5000, 8.5, 8.0, 50.0
+    );
+    
+    ProgramaNetFlix p2 = new ProgramaNetFlix(
+        "Série Criminal", "SHOW", "Investigação policial", "crime, drama", "BR", 
+        "ts888", 222L, 2020, "TV-14", 45, 5, 10000, 9.0, 9.2, 85.5
+    );
+    
+    ProgramaNetFlix p3 = new ProgramaNetFlix(
+        "Série Longa", "SHOW", "Muitas temporadas", "comedy", "US", 
+        "ts777", 333L, 2015, "TV-PG", 25, 12, 2000, 7.5, 7.1, 40.0
+    );
+
+    arvore.inserir(p1);
+    arvore.inserir(p2);
+    arvore.inserir(p3);
+    
+    System.out.println("\n[DEBUG] 3 Programas de teste inseridos na árvore com sucesso!");
+}
 }
