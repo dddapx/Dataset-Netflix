@@ -1,0 +1,4 @@
+id,title,type,description,release_year,age_certification,runtime,genres,production_countries,seasons,imdb_id,imdb_score,imdb_votes,tmdb_popularity,tmdb_score
+tm999,Filme Antigo,MOVIE,Um clássico do cinema,1950,R,120,drama,US,0,tt111,8.5,5000,50.0,8.0
+ts777,Série Longa,SHOW,Muitas temporadas,2015,TV-PG,25,comedy,US,12,tt333,7.5,2000,40.0,7.1
+ts888,Série Criminal,SHOW,Investigação policial,2020,TV-14,45,"crime, drama",BR,5,tt222,9.0,10000,85.5,9.2
